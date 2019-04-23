@@ -2,14 +2,16 @@
 
 import csv
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
+#from urllib.request import urlopen
+import requests
 url = "https://www.zaubacorp.com/company/DR-REDDY-S-LABORATORIES-LTD/L85195TG1984PLC004507"
 dense = 5
 
 
 def searchDepth(url,depth):
-    html = urlopen(url)
-    soup = BeautifulSoup(html, 'lxml')
+    #html = urlopen(url)
+    html = requests.get(url)
+    soup = BeautifulSoup(html.content, 'lxml')
     type(soup)
     index = 1
     while 1:
