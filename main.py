@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 url = "https://www.zaubacorp.com/company/DR-REDDY-S-LABORATORIES-LTD/L85195TG1984PLC004507"
 dense = 5
-
+ 
 
 
 def searchDepth(url,depth):
@@ -18,16 +18,17 @@ def searchDepth(url,depth):
         directorRow = soup.find("tr", { "id" : "package"+str(index) })
         if not directorRow :
             break
-        #directorDetails(directorRow ,depth)
+        directorDetails(directorRow ,depth)
         next_td_tag = directorRow.findNext('table').find_all("tr")
         depth = depth - 1
+        if depth < 1:
+            break
         for i in next_td_tag[1:]: 
             if (i.p.a) :
                 print(i.p.a.get("href"))
-                
+                searchDepth(i.p.a.get("href"), depth)
         depth = depth + 1
-                
-        index = index - 3
+        index = index+ 1
 
 def directorDetails(directorRow,depth):
     director = directorRow.findAll("td")
