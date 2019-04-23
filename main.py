@@ -3,17 +3,15 @@
 import csv
 from bs4 import BeautifulSoup
 from urllib.request import urlopen
-
-
+url = "https://www.zaubacorp.com/company/DR-REDDY-S-LABORATORIES-LTD/L85195TG1984PLC004507"
 dense = 5
 
+
+
 def searchDepth(url,depth):
-    url = "https://www.zaubacorp.com/company/DR-REDDY-S-LABORATORIES-LTD/L85195TG1984PLC004507"
     html = urlopen(url)
     soup = BeautifulSoup(html, 'lxml')
     type(soup)
-
-    depth = 1
     index = 1
     layerEnd = False
     while layerEnd == False:
@@ -21,12 +19,16 @@ def searchDepth(url,depth):
         if not directorRow :
             break
         #directorDetails(directorRow ,depth)
-        next_td_tag = directorRow.findNext('table').tr.findNext("tr").td.p.a.get("href")
-        print(next_td_tag)        
-        index = index +1
+        next_td_tag = directorRow.findNext('table').find_all("tr")
+        depth = depth - 1
+        for i in next_td_tag[1:]: 
+            if (i.p.a) :
+                print(i.p.a.get("href"))
+                
+        depth = depth + 1
+                
+        index = index - 3
 
-
-        
 def directorDetails(directorRow,depth):
     director = directorRow.findAll("td")
     URL = director[1].p.a.get('href')
@@ -44,6 +46,7 @@ def writeCSV(a,b,c,d,e,f):
         writer.writerow(row)
     csvFile.close()    
 
+searchDepth(url,dense)
 
 
 
