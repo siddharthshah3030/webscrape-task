@@ -21,10 +21,9 @@ def searchDepth(url,depth):
         directorDetails(directorRow ,depth)
         next_td_tag = directorRow.findNext('table').find_all("tr")
         depth = depth - 1
-        if not depth < 1:
+        if depth > 0:
             for i in next_td_tag[1:]: 
                 if (i.p.a) :
-                    print(i.p.a.get("href"))
                     searchDepth(i.p.a.get("href"), depth)
         depth = depth + 1
         index = index + 1
@@ -36,7 +35,7 @@ def directorDetails(directorRow,depth):
     directorName = director[1].p.a.contents[0]
     designation =  director[2].p.contents[0]
     appointmentDate =  director[3].p.contents[0]
-    print(URL)
+    print("current depth: "+str(depth) +"  " + directorName )
     writeCSV(URL,DIN,directorName,designation,appointmentDate,depth)
         
 def writeCSV(a,b,c,d,e,f):
